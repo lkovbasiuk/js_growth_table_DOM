@@ -8,42 +8,37 @@ const removeColumn = document.querySelector('.remove-column');
 appendRow.addEventListener('click', () => {
   const table = document.querySelector('table');
   const templateRow = document.querySelector('table tr');
+
+  const newTr = document.createElement('tr');
+
+  table.appendChild(newTr);
+
+  for (let i = 0; i < templateRow.cells.length; i++) {
+    const newTd = document.createElement('td');
+
+    newTr.appendChild(newTd);
+  }
+
   const rowCount = table.rows.length;
 
-  if (rowCount + 1 > 10) {
-    document.querySelector('button.append-row').setAttribute('disabled', '');
-  } else {
-    const newTr = document.createElement('tr');
-
-    table.appendChild(newTr);
-
-    for (let i = 0; i < templateRow.cells.length; i++) {
-      const newTd = document.createElement('td');
-
-      newTr.appendChild(newTd);
-    }
-  }
-
-  if (rowCount + 1 > 2) {
-    document.querySelector('.remove-row').disabled = false;
-  }
+  appendRow.disabled = rowCount >= 10;
+  removeRow.disabled = rowCount <= 2;
 });
 
 removeRow.addEventListener('click', () => {
   const table = document.querySelector('table');
   const rowCount = table.rows.length;
 
-  if (rowCount - 1 < 2) {
-    document.querySelector('button.remove-row').setAttribute('disabled', '');
-  } else {
+  if (rowCount > 2) {
     const lastRow = table.rows[table.rows.length - 1];
 
     lastRow.remove();
   }
 
-  if (rowCount - 1 < 10) {
-    document.querySelector('.append-row').disabled = false;
-  }
+  const updatedRowCount = table.rows.length;
+
+  appendRow.disabled = updatedRowCount >= 10;
+  removeRow.disabled = updatedRowCount <= 2;
 });
 
 appendColumn.addEventListener('click', () => {
@@ -51,19 +46,20 @@ appendColumn.addEventListener('click', () => {
   const firstRow = table.rows[0];
   const columnCount = firstRow ? firstRow.cells.length : 0;
 
-  if (columnCount + 1 > 10) {
-    appendColumn.disabled = true;
-  } else {
-    Array.from(table.rows).forEach((row) => {
-      const newTd = document.createElement('td');
-
-      row.appendChild(newTd);
-    });
+  if (columnCount >= 10) {
+    return;
   }
 
-  if (columnCount + 1 > 2) {
-    document.querySelector('.remove-column').disabled = false;
-  }
+  Array.from(table.rows).forEach((row) => {
+    const newTd = document.createElement('td');
+
+    row.appendChild(newTd);
+  });
+
+  const updatedColCount = table.rows[0]?.cells.length ?? 0;
+
+  appendColumn.disabled = updatedColCount >= 10;
+  removeColumn.disabled = updatedColCount <= 2;
 });
 
 removeColumn.addEventListener('click', () => {
@@ -71,15 +67,14 @@ removeColumn.addEventListener('click', () => {
   const firstRow = table.rows[0];
   const columnCount = firstRow ? firstRow.cells.length : 0;
 
-  if (columnCount - 1 < 2) {
-    removeColumn.disabled = true;
-  } else {
+  if (columnCount > 2) {
     Array.from(table.rows).forEach((row) => {
       row.deleteCell(-1);
     });
   }
 
-  if (columnCount - 1 < 10) {
-    document.querySelector('.append-column').disabled = false;
-  }
+  const updatedColCount = table.rows[0]?.cells.length ?? 0;
+
+  appendColumn.disabled = updatedColCount >= 10;
+  removeColumn.disabled = updatedColCount <= 2;
 });
