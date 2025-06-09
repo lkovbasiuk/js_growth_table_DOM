@@ -10,7 +10,7 @@ appendRow.addEventListener('click', () => {
   const templateRow = document.querySelector('table tr');
   const rowCount = table.rows.length;
 
-  if (rowCount >= 10) {
+  if (rowCount + 1 > 10) {
     document.querySelector('button.append-row').setAttribute('disabled', '');
   } else {
     const newTr = document.createElement('tr');
@@ -24,7 +24,7 @@ appendRow.addEventListener('click', () => {
     }
   }
 
-  if (rowCount >= 2) {
+  if (rowCount + 1 > 2) {
     document.querySelector('.remove-row').disabled = false;
   }
 });
@@ -33,7 +33,7 @@ removeRow.addEventListener('click', () => {
   const table = document.querySelector('table');
   const rowCount = table.rows.length;
 
-  if (rowCount <= 2) {
+  if (rowCount - 1 < 2) {
     document.querySelector('button.remove-row').setAttribute('disabled', '');
   } else {
     const lastRow = table.rows[table.rows.length - 1];
@@ -41,7 +41,7 @@ removeRow.addEventListener('click', () => {
     lastRow.remove();
   }
 
-  if (rowCount <= 10) {
+  if (rowCount - 1 < 10) {
     document.querySelector('.append-row').disabled = false;
   }
 });
@@ -51,7 +51,7 @@ appendColumn.addEventListener('click', () => {
   const firstRow = table.rows[0];
   const columnCount = firstRow ? firstRow.cells.length : 0;
 
-  if (columnCount >= 10) {
+  if (columnCount + 1 > 10) {
     appendColumn.disabled = true;
   } else {
     Array.from(table.rows).forEach((row) => {
@@ -61,7 +61,7 @@ appendColumn.addEventListener('click', () => {
     });
   }
 
-  if (columnCount >= 2) {
+  if (columnCount + 1 > 2) {
     document.querySelector('.remove-column').disabled = false;
   }
 });
@@ -71,7 +71,7 @@ removeColumn.addEventListener('click', () => {
   const firstRow = table.rows[0];
   const columnCount = firstRow ? firstRow.cells.length : 0;
 
-  if (columnCount <= 2) {
+  if (columnCount - 1 < 2) {
     removeColumn.disabled = true;
   } else {
     Array.from(table.rows).forEach((row) => {
@@ -79,7 +79,7 @@ removeColumn.addEventListener('click', () => {
     });
   }
 
-  if (columnCount <= 10) {
+  if (columnCount - 1 < 10) {
     document.querySelector('.append-column').disabled = false;
   }
 });
